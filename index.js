@@ -9,6 +9,8 @@
 
 var toPath = require('to-object-path');
 
+var specialProperties = ['__proto__', 'constructor', 'prototype'];
+
 /**
  * Defines a getter function on an object using property path notation.
  *
@@ -50,6 +52,9 @@ function define(obj, prop, getter) {
   var key;
 
   while ((key = keys.shift())) {
+    if (specialProperties.indexOf(key) !== -1) {
+      continue;
+    }
     while (key.slice(-1) === '\\') {
       key = key.slice(0, -1) + '.' + keys.shift();
     }
